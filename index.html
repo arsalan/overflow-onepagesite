@@ -113,18 +113,18 @@
 				</header>
 				<form>
 					<div class="row half">
-						<div class="6u"><input type="text" class="text" name="name" placeholder="Name" /></div>
-						<div class="6u"><input type="text" class="text" name="email" placeholder="Email" /></div>
+						<div class="6u"><input id="name" type="text" class="text" name="name" placeholder="Name" /></div>
+						<div class="6u"><input id="email" type="text" class="text" name="email" placeholder="Email" /></div>
 					</div>
 					<div class="row half">
 						<div class="12u">
-							<textarea name="message" placeholder="Message"></textarea>
+							<textarea id="message" name="message" placeholder="Message"></textarea>
 						</div>
 					</div>
 					<div class="row">
 						<div class="12u">
 							<ul class="actions">
-								<li><a href="#" class="button form">Send Message</a></li>
+								<li><a id="buttonMessage" href="#" class="button form">Send Message</a></li>
 							</ul>
 						</div>
 					</div>
@@ -303,6 +303,36 @@
 				</ul>
 			</div>
 		</section>
+		<script>
+		$(function() {
+			$("#buttonMessage").click(function() {
+				var name = $("#name").val();
+				var email = $("#email").val();
+				var message = $("#message").val();
 
+				if (!name || !email || !message) {
+
+					$("#buttonMessage").before("<div id='error' style='display:none'>Name, email, and message are required.</div>");
+					$("#error").slideToggle(400).slideToggle(2600);
+				}
+
+				$.ajax({
+					url: "#",
+					type: "POST",
+					data: {
+						name: name,
+						email: email,
+						message: message
+					},
+					dataType: "json",
+					success: function(result){
+						$("#buttonMessage").before("<div id='success' style='display:none'>Your message has been received. Thank you!</div>").fadeOut(500);
+						$("#success").slideToggle(500);
+				});
+
+				return false;
+			});
+		});
+		</script>
 	</body>
 </html>
